@@ -2,8 +2,11 @@
 const todoInput = document.querySelector('.todo-input');
 const todoBtn = document.querySelector('.todo-btn');
 const todoList = document.querySelector('.todo-list');
+const filterOption = document.querySelector('.filter-todo');
 
 // Functions
+
+// Add our Todo and create LI and new divs and buttons
 function addTodo(event) {
   // prevent form from submitting
   event.preventDefault();
@@ -41,6 +44,7 @@ function addTodo(event) {
   todoInput.value = '';
 }
 
+// Delete The Todos
 function deleteCheck(event) {
   const item = event.target;
   // delete the Todo
@@ -50,7 +54,7 @@ function deleteCheck(event) {
     // create a class of fall for styling for a fall animation
     todo.classList.add('fall');
     // remove the element from the page
-    // waits for the transition to end then  it removes the element!
+    // waits for the transition to end then  it removes the
     todo.addEventListener('transitionend', () => {
       todo.remove();
     });
@@ -64,6 +68,40 @@ function deleteCheck(event) {
   }
 }
 
+// Filter the TODO function with the select
+
+function filterTodo(event) {
+  const todos = todoList.childNodes;
+  todos.forEach((todo) => {
+    switch (event.target.value) {
+      // if you click on all we want to show all of the items
+      case 'all':
+        todo.style.display = 'flex';
+        break;
+      // when we click on complete
+      case 'completed':
+        // if the todo has a class of completed style it with display flex
+        if (todo.classList.contains('completed')) {
+          todo.style.display = 'flex';
+          // if it doesnt have the class of completed in it change the style to none
+        } else {
+          todo.style.display = 'none';
+        }
+        break;
+      // if the element IS NOT complted display it as incomplete - if it doesnt have complete
+      case 'incomplete':
+        if (!todo.classList.contains('completed')) {
+          todo.style.display = 'flex';
+        } else {
+          todo.style.display = 'none';
+        }
+        break;
+      default:
+    }
+  });
+}
+
 // Event Listeners
 todoBtn.addEventListener('click', addTodo);
 todoList.addEventListener('click', deleteCheck);
+filterOption.addEventListener('click', filterTodo);
